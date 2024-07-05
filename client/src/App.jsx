@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios';
+import Login from "./Login"
 
 function App() {
   return (
     <>
-      <h1>Heyy, Anons!</h1>
+      <Login/>
     </>
   )
 }
 
-export default App
+export default App;
