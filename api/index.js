@@ -1,27 +1,40 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const dotenv = require("dotenv").config();
+const cors = require("cors");
+const route = require("./routes/messageRoutes.js");
+
 const app = express();
 
-const dotenv = require("dotenv").config();
-
 // JSON CONFIGURATION
-app.use(express.json());
+app.use(bodyParser.json());
 
 // CROSS-ORIGIN RESOURCE SHARING (CORS CONFIGURATION)
-const cors = require("cors");
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
 }));
 
-// APIs 
 app.get("/", (req, res) => {
     res.status(201).json({"message": "Server is working just fine! No worries!"});
 });
 
+// DATABASE CONFIGURATION
+const PORT = process.env.PORT;
+const MONGO_URL = process.env.MONGODB_URL;
 
-// SERVER PORT CONFIGURATION
-const PORT = 5001;
+mongoose.connect(MONGO_URL)
+.then(() => {
+    console.log("Database Connected Successfully");
 
-app.listen(PORT, () => {
-    console.log("SERVER RUNNING ON PORT 5001");
+    // SERVER PORT CONFIGURATION
+    app.listen(PORT, () => {
+        console.log(`SERVER RUNNING ON PORT ${PORT}`);
+    });
+})
+.catch((error) => {
+    console.log(error);
 });
+
+app.use("/anons/message", route);
