@@ -16,10 +16,6 @@ app.use(cors({
     origin: process.env.CLIENT_URL,
 }));
 
-app.get("/", (req, res) => {
-    res.status(201).json({"message": "Server is working just fine! No worries!"});
-});
-
 // DATABASE CONFIGURATION
 const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGODB_URL;
@@ -35,6 +31,12 @@ mongoose.connect(MONGO_URL)
 })
 .catch((error) => {
     console.log(error);
+});
+
+// ROUTES
+// Default Server Route
+app.get("/", (req, res) => {
+    res.status(201).json({"message": "Server is working just fine! No worries!"});
 });
 
 app.use("/anons/message", route);
